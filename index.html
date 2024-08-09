@@ -9,7 +9,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
-    <script src="hospital.js"></script>
+
+        
     <title>Hospital</title>
 </head>
 <body>
@@ -29,7 +30,7 @@
             </nav>
             <div class="container">
                 <div class="box1">
-                    <h1>The one place for <span id="treatment"
+                    <h1 style="color:white">The one place for <span id="treatment"
                             style="font-size: 45px; font-weight:600; color: #fc4b44;"></span></h1>
                     <p>Consult Our Trusted Doctors & Surgeon,<span> Book an Appointment</span></p>
                     <h4>The best of modern healthcare to ensure you stay healthy, always.
@@ -61,8 +62,36 @@
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" placeholder="Enter your password" required>
                 <button type="submit">Login</button>
-                <a href="#" id="show-register-form">new user?  Create account</a>
+                <a href="#" id="show-register-form">new user? Create account</a>
                 <a href="#" id="show-forgotpassword-form" style="color: red;">Forger password?</a>
+            </form>
+        </div>
+        <!-- Forgot Password Form -->
+        <div id="forgot-password-form-container" class="form-container">
+            <button class="close-button">&times;</button>
+            <form id="forgot-password-form">
+                <h2>Forgot Password</h2>
+                <label for="forgot-email">Email:</label>
+                <input type="email" id="forgot-email" name="email" placeholder="Enter your email" required>
+                <button type="button" id="send-otp-button">Send OTP</button>
+            </form>
+            <!-- OTP verification form h-->
+            <form id="otp-form" style="display: none;">
+                <h2>Enter OTP</h2>
+                <label for="otp">OTP:</label>
+                <input type="text" id="otp" name="otp" placeholder="Enter the 6-digit OTP" maxlength="6" required>
+                <div id="timer">Time left: <span id="time-left">2:00</span></div>
+                <button type="button" id="verify-otp-button">Verify OTP</button>
+                <button type="button" id="resend-otp-button">Resend OTP</button>
+            </form>
+            <!-- update password form -->
+            <form id="new-password-form" style="display: none;">
+                <h2>Set New Password</h2>
+                <label for="new-password">New Password:</label>
+                <input type="password" id="new-password" name="new-password" placeholder="Enter your new password" required>
+                <label for="confirm-password">Confirm Password:</label>
+                <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your new password" required>
+                <button type="button" id="update-password-button">Update Password</button>
             </form>
         </div>
         <!-- Register Form -->
@@ -80,7 +109,7 @@
                     <option value="female">Female</option>
                     <option value="other">Other</option>
                 </select>
-                <label for="email">Email:</label>
+                <label for="email">Email:</label>                                                                                                                                                                                                                 
                 <input type="email" id="register-email" name="email" placeholder="Enter your email" required>
                 <label for="mobileNo">Mobile Number:</label>
                 <input type="text" id="mobileNo" name="mobileNo" placeholder="Enter your mobile number" required>
@@ -94,5 +123,7 @@
         </div>
         <div id="custom-alert-container"></div>
     </div>
+    <script src="hospital.js"></script>
+    <script src="password-reset.js"></script>
 </body>
 </html>
