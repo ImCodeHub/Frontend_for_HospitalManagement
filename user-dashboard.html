@@ -9,9 +9,9 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
-        <title>User Dashboard</title>
-    </head>
-    <body>
+    <title>User Dashboard</title>
+</head>
+<body>
     <div>
         <div id="header">
             <nav>
@@ -22,17 +22,17 @@
                     <li><a href="#">Services</a></li>
                     <li><a href="#health">your health</a></li>
                     <li><a href="#" class="welcome">Profile</a></li>
-                    <li><a href="#" id="logout-link", style="color: #fc4b44;font-weight: 500;">Logout</a></li>
+                    <li><a href="#" id="logout-link" , style="color: #fc4b44;font-weight: 500;">Logout</a></li>
                     <button class="book-appointment-btn">Book Appointment</button>
                 </ul>
             </nav>
             <div class="container">
                 <div class="box1">
                     <p>welcome <span class="welcome" style="color: #fc4b44;"></span>
-                        <br><span> Book your Appointment 
-                        <br>for</span>
-                    <span id="treatment"
-                            style="font-size: 45px; font-weight:600; color: #fc4b44;"></span></p>
+                        <br><span> Book your <br> Appointment
+                            <br>for</span>
+                        <span id="treatment" style="font-size: 45px; font-weight:600; color: #fc4b44;"></span>
+                    </p>
                     <h4>The best of modern healthcare to ensure you stay healthy, always.
                     </h4>
                     <button class="book-appointment-btn">Click to Book Appointment</button>
@@ -45,47 +45,44 @@
                         <!-- Appointments will be dynamically added here -->
                     </ul>
                 </div>
-                
+
             </div>
             <div class="container" id="health">
-               <h1>Coming soon...</h1>
+                <h1>Coming soon...</h1>
             </div>
         </div>
         <!-- Background Overlay -->
         <div id="overlay"></div>
         <!-- Appointment Form Overlay -->
-    <div id="appointment-form-container" class="form-container" style="display: none;">
-        <form id="appointment-form">
-            <h2>Book an Appointment</h2>
-            <label for="reason">Reason</label>
-            <select id="reason" name="reason" required>
-                <option value="General Checkup">General Checkup</option>
-                <option value="Specialist Consultation">Specialist Consultation</option>
-                <option value="Follow-up Visit">Follow-up Visit</option>
-                <option value="Emergency">Emergency</option>
-            </select>
+        <div id="appointment-form-container" class="form-container" style="display: none;">
+            <form id="appointment-form">
+                <h2>Book an Appointment</h2>
+                <label for="reason">Reason</label>
+                <select id="reason" name="reason" required>
+                    
+                </select>
 
-            <label for="dateOfBirth">Date of Birth</label>
-            <input type="date" id="dateOfBirth" name="dateOfBirth" required>
+                <label for="dateOfBirth">Date of Birth</label>
+                <input type="date" id="dateOfBirth" name="dateOfBirth" required>
 
-            <label for="appointmentDate">Appointment Date</label>
-            <input type="date" id="appointmentDate" name="appointmentDate" required>
+                <label for="appointmentDate">Appointment Date</label>
+                <input type="date" id="appointmentDate" name="appointmentDate" required>
 
-            <label for="appointmentDate">Appointment Time</label>
-            <select type="date" id="appointmentTime" name="appointmentDate" required>
-                <option value="Morning 11am - 1 pm">Morning 11am - 1 pm</option>
-                <option value="Afternoon 1pm - 4pm">Afternoon 1pm - 4pm</option>
-                <option value="Evening 4pm - 7pm">Evening 4pm - 7pm</option>
-            </select>
+                <label for="appointmentDate">Appointment Time</label>
+                <select type="date" id="appointmentTime" name="appointmentDate" required>
+                    <option value="Morning 11am - 1 pm">Morning 11am - 1 pm</option>
+                    <option value="Afternoon 1pm - 4pm">Afternoon 1pm - 4pm</option>
+                    <option value="Evening 4pm - 7pm">Evening 4pm - 7pm</option>
+                </select>
 
-            <label for="location">Location</label>
-            <input type="text" id="location" name="location" required>
+                <label for="location">Location</label>
+                <input type="text" id="location" name="location" required>
 
-            <button type="submit">Submit</button>
-            <button type="button" class="close-button">Close</button>
-        </form>
-    </div>
-    <div id="custom-alert-container"></div>
+                <button type="submit">Submit</button>
+                <button type="button" class="close-button">Close</button>
+            </form>
+        </div>
+        <div id="custom-alert-container"></div>
     </div>
     <script src="hospital.js"></script>
 </body>
