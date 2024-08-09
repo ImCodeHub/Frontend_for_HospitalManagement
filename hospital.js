@@ -95,8 +95,8 @@ document.addEventListener("DOMContentLoaded", function () {
             button.addEventListener("click", closeForm);
         });
     }
-    
-    
+
+
     function getAppointment() {
         fetch('http://localhost:8080/api/v1/patient/appoinment/recent', {
             method: 'GET',
@@ -104,46 +104,146 @@ document.addEventListener("DOMContentLoaded", function () {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log("Fetched data:", data); // Debug log
-    
-            const appointDetailContainer = document.getElementById('appoint-detail-container');
-            appointDetailContainer.innerHTML = ''; // Clear any existing content
-    
-            if (Array.isArray(data) && data.length > 0) {
-                data.reverse();
-                data.forEach(appointment => {
-                    const appointDetailBox = document.createElement('li');
-                    appointDetailBox.classList.add('appoint-detail-box');
-                    appointDetailBox.innerHTML = `
-                        <p><strong>Appointment ID:</strong> ${appointment.appointmentId}</p>
-                        <p><strong>Patient:</strong> ${appointment.patient}</p>
-                        <p><strong>Reason:</strong> ${appointment.reason}</p>
-                        <p><strong>Date of Birth:</strong> ${appointment.dateOfBirth}</p>
-                        <p><strong>Doctor:</strong> ${appointment.doctor}</p>
-                        <p><strong>Appointment Date:</strong> ${appointment.appointmentDate}</p>
-                        <p><strong>Date of Booking:</strong> ${appointment.dateOfBooking}</p>
-                        <p><strong>Appointment Time:</strong> ${appointment.appointmentTime}</p>
-                        <p><strong>Location:</strong> ${appointment.location}</p>
-                        <p><strong>Status:</strong> ${appointment.status}</p>
-                    `;
-                    appointDetailContainer.appendChild(appointDetailBox);
-                });
-            } else {
-                appointDetailContainer.innerHTML = '<li class="appoint-detail-box">No upcoming appointments.</li>';
-            }
-        })
-        .catch(error => {
-            console.error("Error:", error);
-            const appointDetailContainer = document.getElementById('appoint-detail-container');
-            appointDetailContainer.innerHTML = '<li class="appoint-detail-box">Failed to load appointment details.</li>';
-        });
+            .then(response => response.json())
+            .then(data => {
+                console.log("Fetched data:", data); // Debug log
+
+                const appointDetailContainer = document.getElementById('appoint-detail-container');
+                appointDetailContainer.innerHTML = ''; // Clear any existing content
+
+                if (Array.isArray(data) && data.length > 0) {
+                    data.reverse();
+                    data.forEach(appointment => {
+                        const appointDetailBox = document.createElement('li');
+                        appointDetailBox.classList.add('appoint-detail-box');
+
+                        let statusColor = '';
+
+                        switch (appointment.status) {
+                            case 'PENDING':
+                                statusClass = 'pending';
+                                break;
+                            case 'CANCEL':
+                                statusClass = 'cancel';
+                                break;
+                            case 'APPROVED':
+                                statusClass = 'approved';
+                                break;
+                            case 'REJECTED':
+                                statusClass = 'rejected';
+                                break;
+                        }
+
+                        // Create buttons
+                        const cancelButton = document.createElement('button');
+                        cancelButton.classList.add('cancel-button');
+                        cancelButton.setAttribute('data-id', appointment.appointmentId);
+                        cancelButton.textContent = 'Cancel';
+
+                        const rescheduleButton = document.createElement('button');
+                        rescheduleButton.classList.add('reschedule-button');
+                        rescheduleButton.setAttribute('data-id', appointment.appointmentId);
+                        rescheduleButton.textContent = 'Re-schedule';
+
+                        // Check status and hide buttons if status is 'CANCEL'
+                        if (appointment.status === 'CANCEL') {
+                            cancelButton.style.display = 'none';
+                            rescheduleButton.style.display = 'none';
+                        }
+
+                        appointDetailBox.innerHTML = `
+                        <div class="appoint-data">
+                          <p class="patient"><img src="image/user-injured.png" class="icon"><strong> ${appointment.patient}</strong></p>
+                          <p class="appointment-id"><span>Appointment ID</span>: <strong>${appointment.appointmentId}</strong></p>
+                        </div>
+                        <div class="appoint-data">
+
+                          <p class="doctor"><img src="image/doctor.png" class="icon"> <strong> Dr. ${appointment.doctor}</strong></p>
+                          <p class="reason"><span>Reason:<span></strong> ${appointment.reason}</strong></p>
+                        </div>
+                        <div class="appoint-data">
+                          <p class="appointment-date"><span>Appointment Date</span>: ${appointment.appointmentDate}</p>
+                          <p class="appointment-time">Time: ${appointment.appointmentTime}</p>
+                        </div>
+                        <div class="appoint-data">
+                          <p class="dob"> <img src="image/cake-2-line.png" class="icon"> ${appointment.age} years</p>
+                          <p class="date-of-booking"><span>Booking date</span>: ${appointment.dateOfBooking}</p>
+                        </div>
+                        <div class="appoint-data">
+                        <div class="status-box ${statusClass}">
+                            <p class="status">${appointment.status}</p>
+                            </div>
+                            <p class="location"><img src="image/map-pin-line.png" class="icon"> ${appointment.location}</p>
+                        </div>
+                        <div class="appoint-actions" style="text-align:right">
+                            ${cancelButton.outerHTML}
+                            ${rescheduleButton.outerHTML}
+                        </div>
+
+                      `;
+
+                        appointDetailContainer.appendChild(appointDetailBox);
+                    });
+
+                    // Attach event listeners for Cancel and Re-schedule buttons
+                    document.querySelectorAll('.cancel-button').forEach(button => {
+                        button.addEventListener('click', function () {
+                            const appointmentId = this.getAttribute('data-id');
+                            cancelAppointment(appointmentId);
+                        });
+                    });
+
+                    document.querySelectorAll('.reschedule-button').forEach(button => {
+                        button.addEventListener('click', function () {
+                            const appointmentId = this.getAttribute('data-id');
+                            rescheduleAppointment(appointmentId);
+                        });
+                    });
+                }
+                else {
+                    appointDetailContainer.innerHTML = '<li class="appoint-detail-box">No upcoming appointments.</li>';
+                }
+
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                const appointDetailContainer = document.getElementById('appoint-detail-container');
+                appointDetailContainer.innerHTML = '<li class="appoint-detail-box">Failed to load appointment details.</li>';
+            });
     }
-    
+
     // Call the function to fetch and display appointments
     getAppointment();
-    
+
+
+    // Function to cancel the appointment
+    function cancelAppointment(appointmentId) {
+        fetch(`http://localhost:8080/api/v1/patient/appoinment/cancel/${appointmentId}`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Appointment canceled successfully.');
+                    getAppointment(); // Refresh the appointment list
+                } else {
+                    alert('Failed to cancel appointment.');
+                }
+            })
+
+            .catch(error => console.error('Error canceling appointment:', error));
+    }
+
+    // // Function to re-schedule the appointment
+    // function rescheduleAppointment(appointmentId) {
+    //     // Implement re-schedule logic here (e.g., open a modal to pick a new date/time)
+    //     console.log('Re-schedule appointment:', appointmentId);
+    //     // Example of how to update the appointment after rescheduling:
+    //     // updateAppointment(appointmentId, newDate, newTime);
+    // } 
 
     // Function to update the welcome message
     function updateWelcomeMessage() {
@@ -334,6 +434,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     if (data.message) {
                         showAlert(data.message, 'success');
+                        getAppointment();
                         closeForm();
                     } else {
                         showAlert("Failed to book appointment: " + (data.message || "Unknown error"), 'error');
@@ -345,6 +446,46 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
         });
     }
+
+    // Retrieve the token from localStorage (or wherever you store it)
+    const token = localStorage.getItem('token');
+
+    // Check if the token is available
+    if (!token) {
+        console.error('Token not found');
+        return;
+    }
+
+    fetch('http://localhost:8080/api/v1/patient/reason/types', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Data fetched from API:', data);
+            const reasonSelect = document.getElementById('reason');
+            data.forEach(type => {
+                const option = document.createElement('option');
+                option.value = type;
+                option.textContent = type;
+                reasonSelect.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error fetching doctor types:', error));
+
+    // window.addEventListener('beforeunload', function () {
+    //     localStorage.removeItem('token');
+    //     console.log('Token removed from localStorage');
+    // });
 
 });
 
