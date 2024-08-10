@@ -158,7 +158,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         </div>
                         <div class="appoint-data">
 
-                          <p class="doctor"><img src="image/doctor.png" class="icon"> <strong> Dr. ${appointment.doctor}</strong></p>
+                          <p class="doctor" id = "${appointment.doctorId}" style="cursor:pointer;"><img src="image/doctor.png" class="icon"> <strong> Dr. ${appointment.doctor}</strong></p>
                           <p class="reason"><span>Reason:<span></strong> ${appointment.reason}</strong></p>
                         </div>
                         <div class="appoint-data">
